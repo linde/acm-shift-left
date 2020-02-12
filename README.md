@@ -3,16 +3,16 @@
 
 This is an example minial repo to explore the topic of guardrails as it relates
 to enviroment configuration and how one might might implement controls at
-different points in the config lifecycle.  The analogy is that in application
-development, one tries to "shift left" testing so that it occurs as early in the
-cycle and as far away from production as possible. Anthos Configuration
+different points in the config lifecycle.  The "Shift Left" analogy relates to 
+application development where one tries to "shift left" testing so that it occurs
+as early in the cycle and as far away from production as possible. Anthos Configuration
 Management (ACM) provides tools to accomplish this for policy and configuration
 across clusters and across clouds and on-prem.
 
 ## Problem Statement
 
 Imagine Ida works in a company that has adopted controls such that all
-namespaces in their platform need a label to identify its cost center for
+namespaces in their platform need a label to identify their cost center for
 accounting purposes.
 
 ## Getting Going
@@ -27,7 +27,7 @@ $ kubectl create clusterrolebinding $(whoami)-cluster-admin-binding --clusterrol
 $ kubectl create secret generic git-creds -n=config-management-system --from-file=ssh=$HOME/.ssh/id_rsa.nomos
 ```
 
-Then `kubectl apply -f [config-management.yaml]` and it will take a few minutes
+Then [`kubectl apply -f config-management.yaml`](./config-management.yaml) and it will take a few minutes
 to compile the tempaltes but eventually the cluster will sync:
 
 ```bash
