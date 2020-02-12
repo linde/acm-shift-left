@@ -28,6 +28,14 @@ m # for GKE
 $ kubectl create secret generic git-creds -n=config-management-system --from-file=ssh=$HOME/.ssh/id_rsa.nomos
 ```
 
+Then `kubectl apply -f [config-management.yaml](config-management.yaml)` and it
+will take a few minutes to compile the tempaltes but eventually the cluster will
+sync:
+
+
+
+
+
 * Verify Admission Control
 
 ```bash
