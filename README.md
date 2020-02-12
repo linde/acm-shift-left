@@ -116,6 +116,17 @@ path: ?
 Let's fix the label for the namespace, then try again. If it passes through the
 config withour errors, it worked!
 
+```bash
+$ docker run -it --rm -v $(pwd)/config-root:/workspace/cluster  \
+    gcr.io/kpt-dev/kpt cfg cat --wrap-kind=ResourceList  /workspace | 
+    docker run  -i gcr.io/kpt-functions/gatekeeper-validate:dev 
+apiVersion: v1
+items:
+- apiVersion: templates.gatekeeper.sh/v1beta1
+  kind: ConstraintTemplate
+  metadata:
+...
+```
 
 * Leverage CI to do this for every pull request (PR)
 
