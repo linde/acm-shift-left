@@ -48,7 +48,7 @@ Error from server ([denied by ns-cost-center] you must provide labels: {"cost-ce
 ```
 
 We can see this is the error message from the constraint in
-[config-root/cluster/ns-should-have-cost-center.yaml]. Our controls are working!
+[config-root/cluster/ns-should-have-cost-center.yaml](./config-root/cluster/ns-should-have-cost-center.yaml). Our controls are working!
 
 
 ## Check via GitOps and Shift Left Pre-Commit checks
