@@ -2,37 +2,36 @@
 ## Anthos Config Management "Shift Left" Exploration
 
 This is an example minial repo to explore the topic of guardrails as it relates
-to enviroment configuration and how one might might implement at different
-points in the config lifecycle.  The analogy is that in application development,
-one tries to "shift left" testing so that it occurs as early in the cycle and as
-far away from production as possible. Anthos Configuration Management (ACM)
-provides tools to accomplish this for policy and configuration across clusters
-and across clouds and on-prem.
+to enviroment configuration and how one might might implement controls at
+different points in the config lifecycle.  The analogy is that in application
+development, one tries to "shift left" testing so that it occurs as early in the
+cycle and as far away from production as possible. Anthos Configuration
+Management (ACM) provides tools to accomplish this for policy and configuration
+across clusters and across clouds and on-prem.
 
 ## Problem Statement
 
 Imagine Ida works in a company that has adopted controls such that all
-namespaces in their platform have a label to idenify its cost centers.
+namespaces in their platform need a label to identify its cost center for
+accounting purposes.
 
 ## Getting Going
 
-Let's get ACM installed and managing the namespace config on the
+To get going, let's get ACM installed and managing the namespace config on the
 clusters. Follow these steps to [install and configure
 ACM](https://cloud.google.com/anthos-config-management/docs/how-to/installing).
 
 ```bash
 $ kubectl apply -f config-management-operator.yaml
-$ kubectl create clusterrolebinding $(whoami)-cluster-admin-binding --clusterrole=cluster-admin --user=$(whoami)@google.co
-m # for GKE
+$ kubectl create clusterrolebinding $(whoami)-cluster-admin-binding --clusterrole=cluster-admin --user=$(whoami)@google.com # for GKE
 $ kubectl create secret generic git-creds -n=config-management-system --from-file=ssh=$HOME/.ssh/id_rsa.nomos
 ```
 
-Then `kubectl apply -f [config-management.yaml](config-management.yaml)` and it
-will take a few minutes to compile the tempaltes but eventually the cluster will
-sync:
+Then `kubectl apply -f [config-management.yaml]` and it will take a few minutes
+to compile the tempaltes but eventually the cluster will sync:
 
 ```bash
-$  ~/proj/nomos/dist/nomos status 
+$ nomos status 
 Connecting to clusters...
 Current   Context                 Status           Last Synced Token   Sync Branch
 -------   -------                 ------           -----------------   -----------
@@ -41,10 +40,16 @@ Current   Context                 Status           Last Synced Token   Sync Bran
 
 ## Verify Admission Control
 
+To make sure we're enforcing our accounting control, let's try to violate it:
+
 ```bash
 $ kubectl create ns out-of-compliance-ns
 Error from server ([denied by ns-cost-center] you must provide labels: {"cost-center"}): admission webhook "validation.gatekeeper.sh" denied the request: [denied by ns-cost-center] you must provide labels: {"cost-center"}
 ```
+
+We can see this is the error message from the constraint in
+[config-root/cluster/ns-should-have-cost-center.yaml]. Our controls are working!
+
 
 ## Check via GitOps and Shift Left Pre-Commit checks
 
@@ -76,13 +81,16 @@ kind: Namespace
 For more information, see https://cloud.google.com/anthos-config-management/docs/reference/errors#knv1019
 ```
 
-That was helpful, it was in the wrong directory! ACM can handle [unstructured
+That was helpful, we now know it was in the wrong directory! 
+
+Note: ACM can handle [unstructured
 repos](https://cloud.google.com/anthos-config-management/docs/how-to/unstructured-repo),
 but in its default mode, which we're in, it expects namespace resources in
 appropriate leaf level directories. ([learn more about it's
 repo](https://cloud.google.com/anthos-config-management/docs/how-to/repo))
 
-Move it and see that `nomos vet` succeeds vetting:
+Move the violating config to the appropriate leaf director and see that now
+succeeds when vetted:
 
 ```bash
 $ mkdir config-root/namespaces/vandelay-dev/
@@ -95,9 +103,16 @@ $
 
 ### Next, Validation
 
-Let's make sure our system complies with Ida's cost-center policies too. We can
-use `kpt` to run functions on the config and validate it against our constraint
-from above.
+Now, let's make sure our config does just pass linting tests, but that it
+complies with Ida's cost-center policies too. 
+
+To do this, we can use [`kpt`](https://github.com/GoogleContainerTools/kpt) to
+manipulate the config and to run functions from its [KPT Functions
+Catalog](https://googlecontainertools.github.io/kpt-functions-catalog/). In this
+case, we will use the
+[gcr.io/kpt-functions/gatekeeper-validate](http://gcr.io/kpt-functions/gatekeeper-validate)
+function on the config to validate it against our [cost center
+constraint](./config-root/cluster/ns-should-have-cost-center.yaml) above.
 
 ```bash
 $ docker run -it --rm -v $(pwd)/config-root:/workspace/cluster \
@@ -113,7 +128,7 @@ path: ?
 ```
 
 Let's fix the label for the namespace, then try again. If it passes through the
-config withour errors, it worked!
+config without output to stderr, it worked!
 
 ```bash
 $ docker run -it --rm -v $(pwd)/config-root:/workspace/cluster  \
