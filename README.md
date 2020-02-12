@@ -1,6 +1,5 @@
 
-
-* Anthos Config Management "Shift Left" Exploration
+## Anthos Config Management "Shift Left" Exploration
 
 This is an example minial repo to explore the topic of guardrails as it relates
 to enviroment configuration and how one might might implement at different
@@ -10,12 +9,12 @@ far away from production as possible. Anthos Configuration Management (ACM)
 provides tools to accomplish this for policy and configuration across clusters
 and across clouds and on-prem.
 
-* Problem Statement
+## Problem Statement
 
 Imagine Ida works in a company that has adopted controls such that all
 namespaces in their platform have a label to idenify its cost centers.
 
-* Getting Going
+## Getting Going
 
 Let's get ACM installed and managing the namespace config on the
 clusters. Follow these steps to [install and configure
@@ -40,16 +39,16 @@ Current   Context                 Status           Last Synced Token   Sync Bran
 *         kubernetes-admin@amex   SYNCED           f83841ea            master
 ```
 
-* Verify Admission Control
+## Verify Admission Control
 
 ```bash
 $ kubectl create ns out-of-compliance-ns
 Error from server ([denied by ns-cost-center] you must provide labels: {"cost-center"}): admission webhook "validation.gatekeeper.sh" denied the request: [denied by ns-cost-center] you must provide labels: {"cost-center"}
 ```
 
-* Check via GitOps and Shift Left Pre-Commit checks
+## Check via GitOps and Shift Left Pre-Commit checks
 
-** First, Linting
+### First, Linting
 
 Let's try to put that Namespace into source control and have ACM actuate it
 instead. Create a Namespace file and let's run some linting checks to make sure
@@ -94,7 +93,7 @@ $
 `nomos vet` has no output when there are no issues, so we have no linting errors at this point.
 
 
-** Next, Validation
+### Next, Validation
 
 Let's make sure our system complies with Ida's cost-center policies too. We can
 use `kpt` to run functions on the config and validate it against our constraint
@@ -128,7 +127,7 @@ items:
 ...
 ```
 
-* Leverage CI to do this for every pull request (PR)
+## Leverage CI to do this for every pull request (PR)
 
 ```bash
 # some stuff with cloudbuild
