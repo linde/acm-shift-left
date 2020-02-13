@@ -1,8 +1,12 @@
 steps:
 - name: 'gcr.io/kpt-dev/kpt:latest'
-  entrypoint: bash
   args:
-  - '-c'
-  - |
-    gcr.io/kpt-dev/kpt cfg cat --wrap-kind=ResourceList  /workspace | 
-        docker run  -i gcr.io/kpt-functions/gatekeeper-validate:dev
+  - 'cfg'
+  - 'cat'
+  - '--wrap-kind=ResourceList'
+  - '--dest=/workspace/_compiled.yaml'
+  - '/workspace'
+- name: 'gcr.io/kpt-functions/gatekeeper-validate:dev'	
+  args:	
+    - "--input=/workspace/_compiled.yaml"	
+    - "--output=/workspace/_compiled_checked.yaml"
