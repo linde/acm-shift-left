@@ -6,6 +6,13 @@ steps:
   - '--wrap-kind=ResourceList'
   - '--dest=/workspace/_compiled.yaml'
   - '/workspace'
+- name: 'debian'
+  entrypoint: bash
+  args:
+  - '-c'
+  - |
+    echo "++++++ Showing the flattened config"
+    cat /workspace/_compiled.yaml
 - name: 'gcr.io/kpt-functions/gatekeeper-validate:dev'	
   args:	
     - "--input=/workspace/_compiled.yaml"	
