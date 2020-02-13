@@ -4,9 +4,5 @@ steps:
   args:
   - '-c'
   - |
-    echo "++++++ Flattening the config into one file"
-    kustomize config cat --wrap-kind=ResourceList --wrap-version=v1 /workspace/_audit /workspace/config-root >/workspace/_compiled.yaml 
-- name: 'gcr.io/kpt-functions/gatekeeper-validate:dev'
-  args:
-    - "--input=/workspace/_compiled.yaml"
-    - "--output=/workspace/_compiled_checked.yaml"
+    gcr.io/kpt-dev/kpt cfg cat --wrap-kind=ResourceList  /workspace | 
+        docker run  -i gcr.io/kpt-functions/gatekeeper-validate:dev
