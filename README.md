@@ -145,9 +145,17 @@ items:
 
 ## Leverage CI to do this for every pull request (PR)
 
-```bash
-# some stuff with cloudbuild
-```
+Now that we have a useful validation flow, let's put that into a build step so it occurs on any 
+pull request. To see this, take a look at the [cloudbuild.yaml](cloudbuild.yaml) and it should seem 
+quite familiar -- this is simply just the CLI docker commands put into a trivial build step and trigger. 
+To see an example run, consider [runs/442513791](runs/442513791).
+
+
+## Conclusion
+
+Wrapping this all up, we've seen that it is worthwhile to have controls for your configuration and even better
+to shift left those checks. Not only does this help you find issues sooner, but it reinforces a defense in depth 
+posture and helps teams establish guard rails for decentralized control, but with safeguards.
 
 
 
