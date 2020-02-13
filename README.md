@@ -17,7 +17,7 @@ accounting purposes.
 
 ## Getting Going
 
-> Requirements: locally, [`kubectl`](https://kubernetes.io/docs/tasks/tools/install-kubectl/), the Anthos Config Management CLI tool [`nomos`](https://cloud.google.com/anthos-config-management/docs/how-to/nomos-command#installing), and [`docker`](https://docs.docker.com/install/). Also, [Anthos Config Management](https://cloud.google.com/anthos/config-management) and [Cloud Build](https://cloud.google.com/cloud-build). Lastly a conformant Kubernetes cluster ([GKE](https://cloud.google.com/kubernetes-engine) or [kind](https://github.com/kubernetes-sigs/kind) works great!).
+> Requirements: locally, [`kubectl`](https://kubernetes.io/docs/tasks/tools/install-kubectl/), the ACM cli [`nomos`](https://cloud.google.com/anthos-config-management/docs/how-to/nomos-command#installing), and [`docker`](https://docs.docker.com/install/). Also, [Anthos Config Management](https://cloud.google.com/anthos/config-management) and [Cloud Build](https://cloud.google.com/cloud-build). Lastly a conformant Kubernetes cluster ([GKE](https://cloud.google.com/kubernetes-engine) or [kind](https://github.com/kubernetes-sigs/kind) works great!).
 
 To get going, let's get ACM installed and managing the namespace config on the
 clusters. Follow these steps to [install and configure
