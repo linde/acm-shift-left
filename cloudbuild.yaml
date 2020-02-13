@@ -1,12 +1,12 @@
 steps:
 - name: 'gcr.io/kpt-dev/kpt:latest'
-  entrypoint: bash
   args:
-  - '-c'
-  - |
-    echo "++++++ Flattening the config into one file"
-    kustomize config cat --wrap-kind=ResourceList --wrap-version=v1 /workspace/_audit /workspace/config-root >/workspace/_compiled.yaml 
-- name: 'gcr.io/kpt-functions/gatekeeper-validate:dev'
-  args:
-    - "--input=/workspace/_compiled.yaml"
+  - 'cfg'
+  - 'cat'
+  - '--wrap-kind=ResourceList'
+  - '--dest=/workspace/_compiled.yaml'
+  - '/workspace/config-root/'
+- name: 'gcr.io/kpt-functions/gatekeeper-validate:dev'	
+  args:	
+    - "--input=/workspace/_compiled.yaml"	
     - "--output=/workspace/_compiled_checked.yaml"
