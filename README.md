@@ -88,7 +88,7 @@ That was helpful, we now know it was in the wrong directory!
 
 > Note: ACM can handle [unstructured
 repos](https://cloud.google.com/anthos-config-management/docs/how-to/unstructured-repo),
-> but in its default mode, which we're in, it expects namespace resources in
+> but we're in its default mode which expects namespace resources in
 > appropriate leaf level directories. ([learn more about it's
 repo](https://cloud.google.com/anthos-config-management/docs/how-to/repo))
 
