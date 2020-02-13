@@ -40,7 +40,9 @@ Current   Context                 Status           Last Synced Token   Sync Bran
 
 ## Verify Admission Control
 
-To make sure we're enforcing our accounting control, let's try to violate it:
+Now let's take on enforcement of that accounting control for cost-center labels -- to do this, we will enlist the assitance of the [Anthos Config Management Policy Controller](https://cloud.google.com/anthos-config-management/docs/concepts/policy-controller). In our config, we have [enabled this controller](config-management.yaml#L8-L10) and configured a constraint through [k8srequiredlabels.yaml](./config-root/cluster/k8srequiredlabels.yaml) that customizes our policy for the specific label we require (ie "[cost-center](config-root/cluster/ns-should-have-cost-center.yaml#L13)"). 
+
+To see this in action and make sure we're enforcing our accounting control, let's try to violate it:
 
 ```bash
 $ kubectl create ns out-of-compliance-ns
@@ -123,8 +125,6 @@ Error: Found 1 violations:
 [1] you must provide labels: {"cost-center"}
 
 name: "vandelay-dev"
-path: ?
-
 ```
 
 Let's fix the label for the namespace (see this [line for an example](config-root/namespaces/vandelay-dev/namespace.yaml#L6)), then try again. If it passes through the
