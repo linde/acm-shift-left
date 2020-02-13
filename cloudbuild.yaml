@@ -13,6 +13,7 @@ steps:
   - |
     echo "++++++ Showing the flattened config"
     cat /workspace/_compiled.yaml
+    chmod -R a+r /workspace
 - name: 'gcr.io/kpt-functions/gatekeeper-validate:dev'	
   args:	
     - "--input=/workspace/_compiled.yaml"	
