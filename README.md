@@ -109,16 +109,15 @@ complies with the accounting cost-center control too.
 
 To do this, we can use [`kpt`](https://github.com/GoogleContainerTools/kpt) to
 manipulate the config and to run functions from its [KPT Functions
-Catalog](https://googlecontainertools.github.io/kpt-functions-catalog/). In this
-case, we will use the
-[gcr.io/kpt-functions/gatekeeper-validate](http://gcr.io/kpt-functions/gatekeeper-validate)
+Catalog](https://googlecontainertools.github.io/kpt-functions-catalog/). 
+In this case, we will use the [gcr.io/config-management-release/policy-controller-validate](http://gcr.io/config-management-release/policy-controller-validate)
 function on the config to validate it against our [cost center
 constraint](./config-root/cluster/ns-should-have-cost-center.yaml) above.
 
 ```bash
-$ docker run -it --rm -v $(pwd)/config-root:/workspace/cluster \
-    gcr.io/kpt-dev/kpt cfg cat --wrap-kind=ResourceList  /workspace | 
-    docker run  -i gcr.io/kpt-functions/gatekeeper-validate:dev
+$ docker run -it --rm -v $(pwd)/config-root:/workspace/config-root \ 
+    gcr.io/config-management-release/kpt cfg cat --wrap-kind=ResourceList  /workspace | 
+    docker run  -i gcr.io/config-management-release/policy-controller-validate 
 Error: Found 1 violations:
 
 [1] you must provide labels: {"cost-center"}
@@ -128,13 +127,13 @@ path: ?
 
 ```
 
-Let's fix the label for the namespace, then try again. If it passes through the
+Let's fix the label for the namespace (see this [line for an example](config-root/namespaces/vandelay-dev/namespace.yaml#L6)), then try again. If it passes through the
 config without output to stderr, it worked!
 
 ```bash
-$ docker run -it --rm -v $(pwd)/config-root:/workspace/cluster  \
-    gcr.io/kpt-dev/kpt cfg cat --wrap-kind=ResourceList  /workspace | 
-    docker run  -i gcr.io/kpt-functions/gatekeeper-validate:dev 
+$ docker run -it --rm -v $(pwd)/config-root:/workspace/config-root \ 
+    gcr.io/config-management-release/kpt cfg cat --wrap-kind=ResourceList  /workspace | 
+    docker run  -i gcr.io/config-management-release/policy-controller-validate 
 apiVersion: v1
 items:
 - apiVersion: templates.gatekeeper.sh/v1beta1
