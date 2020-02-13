@@ -112,7 +112,7 @@ complies with the accounting cost-center control too.
 To do this, we can use [`kpt`](https://github.com/GoogleContainerTools/kpt) to
 manipulate the config and to run functions from its [KPT Functions
 Catalog](https://googlecontainertools.github.io/kpt-functions-catalog/). 
-In this case, we will use the [gcr.io/config-management-release/policy-controller-validate](http://gcr.io/config-management-release/policy-controller-validate)
+In this case, we will use the [policy-controller-validate](http://gcr.io/config-management-release/policy-controller-validate)
 function on the config to validate it against our [cost center
 constraint](./config-root/cluster/ns-should-have-cost-center.yaml) above.
 
