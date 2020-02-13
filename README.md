@@ -47,17 +47,18 @@ $ kubectl create ns out-of-compliance-ns
 Error from server ([denied by ns-cost-center] you must provide labels: {"cost-center"}): admission webhook "validation.gatekeeper.sh" denied the request: [denied by ns-cost-center] you must provide labels: {"cost-center"}
 ```
 
-We can see this is the error message from the constraint in
-[config-root/cluster/ns-should-have-cost-center.yaml](./config-root/cluster/ns-should-have-cost-center.yaml). Our controls are working!
+We can see this is the error message from the constraint in our cluster scoped
+[k8srequiredlabels.yaml](./config-root/cluster/k8srequiredlabels.yaml) resource. Our controls are working! 
 
 
 ## Check via GitOps and Shift Left Pre-Commit checks
 
+But depending on admission checks is like testing application code only deployed to prod. 
+Let's try to shift this to the left.
+
 ### First, Linting
 
-Let's try to put that Namespace into source control and have ACM actuate it
-instead. Create a Namespace file and let's run some linting checks to make sure
-it can be applied.
+Let's try to put that Namespace into source control and have ACM actuate it instead of applying it directly. This gives us a chance to run some linting checks to make sure it can be applied.
 
 ```bash
 $ cat >config-root/namespaces/vandelay-dev.yaml <<END
@@ -83,13 +84,13 @@ For more information, see https://cloud.google.com/anthos-config-management/docs
 
 That was helpful, we now know it was in the wrong directory! 
 
-Note: ACM can handle [unstructured
+> Note: ACM can handle [unstructured
 repos](https://cloud.google.com/anthos-config-management/docs/how-to/unstructured-repo),
-but in its default mode, which we're in, it expects namespace resources in
-appropriate leaf level directories. ([learn more about it's
+> but in its default mode, which we're in, it expects namespace resources in
+> appropriate leaf level directories. ([learn more about it's
 repo](https://cloud.google.com/anthos-config-management/docs/how-to/repo))
 
-Move the violating config to the appropriate leaf director and see that now
+Move the violating config to the appropriate leaf directory and see that now
 succeeds when vetted:
 
 ```bash
@@ -103,8 +104,8 @@ $
 
 ### Next, Validation
 
-Now, let's make sure our config does just pass linting tests, but that it
-complies with Ida's cost-center policies too. 
+Now, let's make sure our config doesn't just pass linting tests, but that it
+complies with the accounting cost-center control too. 
 
 To do this, we can use [`kpt`](https://github.com/GoogleContainerTools/kpt) to
 manipulate the config and to run functions from its [KPT Functions
