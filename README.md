@@ -1,10 +1,10 @@
 
-## Anthos Config Management "Shift Left" Exploration
+## Anthos Config Management Shift Left Exploration
 
-This is an example minial repo to explore the topic of guardrails as it relates
+This is an example minimal repo to explore the topic of guardrails as it relates
 to enviroment configuration and how one might might implement controls at
-different points in the config lifecycle.  The "Shift Left" analogy relates to 
-application development where one tries to "shift left" testing so that it occurs
+different points in the config lifecycle.  The "shift left" analogy relates to 
+application development where one tries to shift left testing time-wise so that it occurs
 as early in the cycle and as far away from production as possible. Anthos Configuration
 Management (ACM) provides tools to accomplish this for policy and configuration
 across clusters and across clouds and on-prem.
