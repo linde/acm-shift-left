@@ -98,7 +98,7 @@ succeeds when vetted:
 ```bash
 $ mkdir config-root/namespaces/vandelay-dev/
 $ mv config-root/namespaces/vandelay-dev.yaml config-root/namespaces/vandelay-dev/namespace.yaml
-$ ~/proj/nomos/dist/nomos vet --path config-root/
+$ nomos vet --path config-root/
 $
 ```
 `nomos vet` has no output when there are no issues, so we have no linting errors at this point.
