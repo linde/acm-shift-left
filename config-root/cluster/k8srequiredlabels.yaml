@@ -6,7 +6,7 @@ spec:
   crd:
     spec:
       names:
-        kind: K8sRequiredLabels
+        kind: MyCostCenterPolicy
       validation:
         openAPIV3Schema:
           properties:

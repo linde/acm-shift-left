@@ -1,6 +1,6 @@
 
 apiVersion: constraints.gatekeeper.sh/v1alpha1
-kind: K8sRequiredLabels
+kind: MyCostCenterPolicy
 metadata:
   name: ns-cost-center
 spec:
